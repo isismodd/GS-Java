@@ -1,11 +1,14 @@
 package br.com.fiap.bean;
-
+/**Classe para cadastrar empresas parceiraas e listar
+ * @author Isis Macedo
+ * @version 5.0
+ */
 public class EmpresaParceira {
     // Atributos
     private int id;
     private String nome;
     private String setorAtuacao;
-    private double valorDoacao; // em reais
+    private double valorDoacao;
 
     // Construtor
     public EmpresaParceira(int id, String nome, String setorAtuacao, double valorDoacao) {
@@ -49,7 +52,7 @@ public class EmpresaParceira {
         return this.setorAtuacao.equalsIgnoreCase(setor);
     }
 
-    // Sobrecarga do metodo atuaNoSetor para verificar múltiplos setores
+    // Sobrecarga do metodo atuaNoSetor pra verificar varios setores
     public boolean atuaNoSetor(String[] setores) {
         for (String setor : setores) {
             if (this.setorAtuacao.equalsIgnoreCase(setor)) {
