@@ -1,42 +1,32 @@
 package br.com.fiap.bean;
-/**Classe para cadastrar empresas parceiraas e listar
+
+/**
+ * Classe para cadastrar empresas parceiras
  * @author Isis Macedo
- * @version 5.0
+ * @version 6.0
  */
-public class EmpresaParceira {
-    // Atributos
-    private int id;
-    private String nome;
+public class EmpresaParceira extends Ong {
+    // Atributos 
     private String setorAtuacao;
     private double valorDoacao;
 
     // Construtor
-    public EmpresaParceira(int id, String nome, String setorAtuacao, double valorDoacao) {
-        this.id = id;
-        this.nome = nome;
-        this.setorAtuacao = setorAtuacao;
-        this.valorDoacao = valorDoacao;
+    public EmpresaParceira(int id, String nome, String areaAtendimento, String setorAtuacao, double valorDoacao) {
+        super(id, nome, areaAtendimento);
+        setSetorAtuacao(setorAtuacao);
+        setValorDoacao(valorDoacao);
     }
 
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
+    // Getters e Setters 
     public String getSetorAtuacao() {
         return setorAtuacao;
     }
 
     public void setSetorAtuacao(String setorAtuacao) {
-        this.setorAtuacao = setorAtuacao;
+        if (setorAtuacao == null || setorAtuacao.trim().isEmpty()) {
+            throw new IllegalArgumentException("Setor de atuação não pode ser vazio");
+        }
+        this.setorAtuacao = setorAtuacao.trim();
     }
 
     public double getValorDoacao() {
@@ -44,15 +34,28 @@ public class EmpresaParceira {
     }
 
     public void setValorDoacao(double valorDoacao) {
+        if (valorDoacao < 0) {
+            throw new IllegalArgumentException("Valor da doação não pode ser negativo");
+        }
         this.valorDoacao = valorDoacao;
     }
 
-    // Metodo operacional que verifica se a empresa atua em um setor específico
+    // Métodos operacionais
+
+    /**
+     * Verifica se a empresa atua em um setor específico
+     * @param setor Setor a ser verificado
+     * @return true se a empresa atuar no setor
+     */
     public boolean atuaNoSetor(String setor) {
         return this.setorAtuacao.equalsIgnoreCase(setor);
     }
 
-    // Sobrecarga do metodo atuaNoSetor pra verificar varios setores
+    /**
+     * Verifica se a empresa atua em algum dos setores informados
+     * @param setores Array de setores a verificar
+     * @return true se a empresa atuar em algum dos setores
+     */
     public boolean atuaNoSetor(String[] setores) {
         for (String setor : setores) {
             if (this.setorAtuacao.equalsIgnoreCase(setor)) {
@@ -62,27 +65,38 @@ public class EmpresaParceira {
         return false;
     }
 
-    // Metodo operacional que alcula o valor de benefício fiscal (10% do valor doado)
+    /**
+     * Calcula o benefício fiscal padrão (10% do valor doado)
+     * @return Valor do benefício fiscal
+     */
     public double calcularBeneficioFiscal() {
         return this.valorDoacao * 0.10;
     }
 
-    // Sobrecarga do metodo calcularBeneficioFiscal com taxa personalizada
+    /**
+     * Calcula benefício fiscal com taxa personalizada
+     * @param taxaPersonalizada Taxa entre 0 e 0.30 (30%)
+     * @return Valor do benefício fiscal
+     */
     public double calcularBeneficioFiscal(double taxaPersonalizada) {
         if (taxaPersonalizada < 0 || taxaPersonalizada > 0.30) {
-            System.out.printf("Erro: Taxa de benefício deve ser entre 0 e 0.30 (30%%)");
-            return 0;
+            throw new IllegalArgumentException("Taxa deve ser entre 0 e 0.30 (30%)");
         }
         return this.valorDoacao * taxaPersonalizada;
     }
 
-    // Metodo operacional Exibe relatório da empresa
-    public void exibirRelatorio() {
-        System.out.println("=== Relatório da Empresa Parceira ===");
-        System.out.printf("ID: %d\n", id);
-        System.out.printf("Nome: %s\n", nome);
+    /**
+     * Sobrescrita do método exibirInformacoes da classe Ong
+     * mostra algumas informações específicas da empresa parceira
+     */
+    @Override
+    public void exibirInformacoes() {
+        System.out.println("=== Informações da Empresa Parceira ===");
+        System.out.printf("ID: %d\n", getId());
+        System.out.printf("Nome: %s\n", getNome());
+        System.out.printf("Área de Atendimento: %s\n", getAreaAtendimento());
         System.out.printf("Setor de Atuação: %s\n", setorAtuacao);
-        System.out.printf("Valor doado: R$%.2f\n", valorDoacao);
-        System.out.printf("Benefício fiscal estimado: R$%.2f\n", calcularBeneficioFiscal());
+        System.out.printf("Valor Doado: R$%.2f\n", valorDoacao);
+        System.out.printf("Benefício Fiscal: R$%.2f\n", calcularBeneficioFiscal());
     }
 }
