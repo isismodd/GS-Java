@@ -1,5 +1,5 @@
 package br.com.fiap.bean;
-/**Classe para cadastrar empresas parceiraas e listar
+/**Classe para cadastrar chamados de resgate 
  * @author Isis Macedo
  * @version 5.0
  */
