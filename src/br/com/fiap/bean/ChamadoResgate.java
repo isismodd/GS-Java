@@ -119,7 +119,7 @@ public class ChamadoResgate extends Ong {
             throw new IllegalArgumentException("Situação não pode ser vazia");
         }
         this.situacaoVitima = situacaoVitima;
-        this.nivelEmergencia = calcularEmergencia(); // Atualiza emergência ao mudar situação
+        this.nivelEmergencia = calcularEmergencia(); 
     }
 
     public String getRegiao() {
